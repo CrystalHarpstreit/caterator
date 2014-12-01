@@ -1,5 +1,10 @@
 var container = document.querySelector(".container");
-var input = document.querySelector(".inpt");
+
+var names = ["Eddy", "Jim", "Casey", "Laurie", "Ace"];
+
+var arr = [];
+
+var whiskerLength = Math.floor(Math.random() * 101);
 
 function Cat(name, age, color, whiskerLength, bib) {
   this.name = name;
@@ -24,16 +29,28 @@ function Cat(name, age, color, whiskerLength, bib) {
 var catOne = new Cat("Eddy", 3, "TuxiBoi", 20, true);
 
 function render() {
-  var listItem = document.createElement("li");
-  listItem.innerHTML = input.value;
-  container.appendChild(listItem);
-  input.value = "";
+  for (var i = 0; i < names.length; i++) {
+
+    var box = document.createElement("span");
+    box.className = "draggie-box";
+    container.appendChild(box);
+    box.innerHTML = names[i];
+    var draggie = new Draggabilly(box);
+    box.dataset.property = "name";
+    box.dataset.value = names[i];
+    box.dataset.property = "whiskerLength";
+    box.dataset.value = whiskerLength;
+
+    draggie.on('dragStart', function(instance, event, pointer) {
+      instance.element.classList.add('active');
+    });
+
+    draggie.on('dragEnd', function(instance, event, pointer) {
+      instance.element.classList.remove('active');
+      console.log(instance.element.dataset.property);
+      console.log(instance.element.dataset.value);
+    });
+  }
 };
 
-var btn = document.querySelector(".btn");
-btn.addEventListener("click", function() {
-  catOne.sayName();
-  catOne.sayAge();
-  catOne.sayColor();
-  render();
-});
+render();

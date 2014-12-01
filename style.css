@@ -1,0 +1,35 @@
+#wrapper {
+  position: relative;
+  width: 1200px;
+}
+
+h2 {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.draggie-box {
+  width: 200px;
+  height: 70px;
+  border-radius: 5px;
+  background-color: #FA0;
+  display: inline-block;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+}
+
+.draggie-box.active {
+  box-shadow: 0 0 10px rgba(50, 50, 50, 0.8);
+}
+
+.container {
+  display: inline-block;
+  width: 500px;
+  height: 95vh;
+  border: 3px solid #ccc;
+  border-radius: 5px;
+}
+
+.cat-maker.container {
+  float: right;
+}
