@@ -1,19 +1,6 @@
 var container = document.querySelector(".container");
 
-var names = ["Eddy", "Jim", "Casey", "Laurie", "Ace"];
-
-// how will i attach my random colors to my spans?
-function colorizer() {
-  var color1 = Math.floor(Math.random() * 255);
-  var color2 = Math.floor(Math.random() * 255);
-  var color3 = Math.floor(Math.random() * 255);
-
-  return "rgba(" + color1 + "," + color2 + "," + color3 + ",0.1)";
-}
-
-console.log(colorizer());
-
-window.colorizer = colorizer;
+var names = ["Eddy", "Jim", "Casey", "Laurie", "Ace", "Sparkle-Pants"];
 
 function Cat(name, age, color, whiskerLength, bib) {
   this.name = name;
@@ -40,16 +27,18 @@ var catOne = new Cat("Eddy", 3, "TuxiBoi", 20, true);
 function render() {
   namer();
   whiskerMkr();
+  colorCat();
 };
 
 function namer() {
   for (var i = 0; i < names.length; i++) {
     var box = document.createElement("span");
-    box.className = "draggie-box";
+    box.className = "draggie-box name";
     container.appendChild(box);
 
     box.dataset.property = "name";
     box.dataset.value = names[i];
+    box.innerHTML = "My name is " + names[i];
   };
 
   var draggie = new Draggabilly(box);
@@ -60,8 +49,6 @@ function namer() {
 
   draggie.on('dragEnd', function(instance, event, pointer) {
     instance.element.classList.remove('active');
-    console.log(instance.element.dataset.property);
-    console.log(instance.element.dataset.value);
   });
 }
 
@@ -74,6 +61,7 @@ function whiskerMkr() {
     var whiskerLength = Math.floor(Math.random() * 101);
     box.dataset.property = "whiskerLength";
     box.dataset.value = whiskerLength;
+    box.innerHTML = "My whisker length is "+ whiskerLength;
 
     var draggie = new Draggabilly(box);
 
@@ -83,10 +71,43 @@ function whiskerMkr() {
 
     draggie.on('dragEnd', function(instance, event, pointer) {
       instance.element.classList.remove('active');
-      console.log(instance.element.dataset.property);
-      console.log(instance.element.dataset.value);
     });
   }
+}
+
+function colorCat() {
+  for (var i = 0; i < names.length; i++) {
+    var box = document.createElement("span");
+    box.className = "draggie-box color";
+    container.appendChild(box);
+
+    box.style.backgroundColor = colorizer();
+    box.innerHTML = "I'm this color";
+
+    var draggie = new Draggabilly(box);
+
+    draggie.on('dragStart', function(instance, event, pointer) {
+      instance.element.classList.add('active');
+    });
+
+    draggie.on('dragEnd', function(instance, event, pointer) {
+      instance.element.classList.remove('active');
+    });
+  }
+}
+
+function colorizer() {
+  var box = document.querySelector("span");
+
+  box.dataset.property = "color";
+
+  var color1 = Math.floor(Math.random() * 255);
+  var color2 = Math.floor(Math.random() * 255);
+  var color3 = Math.floor(Math.random() * 255);
+
+  var rgba = "rgba(" + color1 + "," + color2 + "," + color3 + ",0.5)";
+  console.log(box.dataset.value = rgba);
+  return rgba;
 }
 
 render();
