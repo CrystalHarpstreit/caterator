@@ -24,6 +24,24 @@ function Cat(name, age, color, whiskerLength, bib) {
 
 var catOne = new Cat("Eddy", 3, "TuxiBoi", 20, true);
 
+/**
+  utility function for creating draggie + attaching handlers
+  usage:
+    var span = document.createElement('span');
+    var draggie = createDraggie(span);
+
+    {...}
+
+function createDraggie(el) {
+  var draggie = new Dragabilly(el);
+
+  draggie.on{...}
+  draggie.on{...}
+
+  return draggie;
+}
+*/
+
 function render() {
   namer();
   whiskerMkr();
@@ -39,23 +57,24 @@ function namer() {
     box.dataset.property = "name";
     box.dataset.value = names[i];
     box.innerHTML = "My name is " + names[i];
-  };
 
-  var draggie = new Draggabilly(box);
+    var draggie = new Draggabilly(box);
 
-  draggie.on('dragStart', function(instance, event, pointer) {
-    instance.element.classList.add('active');
-  });
+    draggie.on('dragStart', function(instance, event, pointer) {
+      instance.element.classList.add('active');
+    });
 
-  draggie.on('dragEnd', function(instance, event, pointer) {
-    instance.element.classList.remove('active');
-  });
+    draggie.on('dragEnd', function(instance, event, pointer) {
+      instance.element.classList.remove('active');
+    });
+    addPositionAlert(draggie);
+  }
 }
 
 function whiskerMkr() {
   for (var i = 0; i < names.length; i++) {
     var box = document.createElement("span");
-    box.className = "draggie-box";
+    box.className = "draggie-box whisker";
     container.appendChild(box);
 
     var whiskerLength = Math.floor(Math.random() * 101);
@@ -72,6 +91,7 @@ function whiskerMkr() {
     draggie.on('dragEnd', function(instance, event, pointer) {
       instance.element.classList.remove('active');
     });
+    addPositionAlert(draggie);
   }
 }
 
@@ -80,6 +100,7 @@ function colorCat() {
     var box = document.createElement("span");
     box.className = "draggie-box color";
     container.appendChild(box);
+    box.dataset.property = 'color';
 
     box.style.backgroundColor = colorizer();
     box.innerHTML = "I'm this color";
@@ -93,21 +114,29 @@ function colorCat() {
     draggie.on('dragEnd', function(instance, event, pointer) {
       instance.element.classList.remove('active');
     });
+    addPositionAlert(draggie);
   }
 }
 
 function colorizer() {
-  var box = document.querySelector("span");
+  var box = document.querySelector(".color");
 
-  box.dataset.property = "color";
+
 
   var color1 = Math.floor(Math.random() * 255);
   var color2 = Math.floor(Math.random() * 255);
   var color3 = Math.floor(Math.random() * 255);
 
-  var rgba = "rgba(" + color1 + "," + color2 + "," + color3 + ",0.5)";
-  console.log(box.dataset.value = rgba);
+  var rgba = 'rgba(' + color1 + "," + color2 + "," + color3 + ",0.5)";
   return rgba;
+}
+
+function addPositionAlert(draggie) {
+  draggie.on('dragEnd', function(instance, event, pointer) {
+    if (instance.position.x > 550 && instance.position.x < 780) {
+      alert('You chose a ' + instance.element.dataset.property);
+    }
+  })
 }
 
 render();
