@@ -24,51 +24,24 @@ function Cat(name, age, color, whiskerLength, bib) {
 
 var catOne = new Cat("Eddy", 3, "TuxiBoi", 20, true);
 
-/**
-  utility function for creating draggie + attaching handlers
-  usage:
-    var span = document.createElement('span');
-    var draggie = createDraggie(span);
-
-    {...}
-
-function createDraggie(el) {
-  var draggie = new Dragabilly(el);
-
-  draggie.on{...}
-  draggie.on{...}
-
-  return draggie;
-}
-*/
-
 function render() {
   namer();
   whiskerMkr();
   colorCat();
-};
+}
 
 function namer() {
   for (var i = 0; i < names.length; i++) {
-    var box = document.createElement("span");
-    box.className = "draggie-box name";
+    var box = document.createElement('span');
+    box.className = 'draggie-box name';
     container.appendChild(box);
 
-    box.dataset.property = "name";
+    box.dataset.property = 'name';
     box.dataset.value = names[i];
-    box.innerHTML = "My name is " + names[i];
+    box.innerHTML = 'My name is ' + names[i];
 
-    var draggie = new Draggabilly(box);
-
-    draggie.on('dragStart', function(instance, event, pointer) {
-      instance.element.classList.add('active');
-    });
-
-    draggie.on('dragEnd', function(instance, event, pointer) {
-      instance.element.classList.remove('active');
-    });
-    addPositionAlert(draggie);
-  }
+    var draggie = draggieMaker(box);
+  };
 }
 
 function whiskerMkr() {
@@ -78,20 +51,11 @@ function whiskerMkr() {
     container.appendChild(box);
 
     var whiskerLength = Math.floor(Math.random() * 101);
-    box.dataset.property = "whiskerLength";
+    box.dataset.property = "whisker length";
     box.dataset.value = whiskerLength;
     box.innerHTML = "My whisker length is "+ whiskerLength;
 
-    var draggie = new Draggabilly(box);
-
-    draggie.on('dragStart', function(instance, event, pointer) {
-      instance.element.classList.add('active');
-    });
-
-    draggie.on('dragEnd', function(instance, event, pointer) {
-      instance.element.classList.remove('active');
-    });
-    addPositionAlert(draggie);
+    var draggie = draggieMaker(box);
   }
 }
 
@@ -105,23 +69,32 @@ function colorCat() {
     box.style.backgroundColor = colorizer();
     box.innerHTML = "I'm this color";
 
-    var draggie = new Draggabilly(box);
-
-    draggie.on('dragStart', function(instance, event, pointer) {
-      instance.element.classList.add('active');
-    });
-
-    draggie.on('dragEnd', function(instance, event, pointer) {
-      instance.element.classList.remove('active');
-    });
-    addPositionAlert(draggie);
+    var draggie = draggieMaker(box);
   }
 }
 
+// create draggie from given element and attach event handlers
+function draggieMaker(box) {
+
+  var draggie = new Draggabilly(box);
+
+  draggie.on('dragStart', function(instance, event, pointer) {
+    instance.element.classList.add('active');
+  });
+
+  draggie.on('dragEnd', function(instance, event, pointer) {
+    instance.element.classList.remove('active');
+
+    if (instance.position.x > 550 && instance.position.x < 780) {
+      console.log('You chose a ' + instance.element.dataset.property);
+    }
+  });
+
+  return draggie;
+}
+
 function colorizer() {
-  var box = document.querySelector(".color");
-
-
+  var box = document.querySelector('.color');
 
   var color1 = Math.floor(Math.random() * 255);
   var color2 = Math.floor(Math.random() * 255);
@@ -129,14 +102,6 @@ function colorizer() {
 
   var rgba = 'rgba(' + color1 + "," + color2 + "," + color3 + ",0.5)";
   return rgba;
-}
-
-function addPositionAlert(draggie) {
-  draggie.on('dragEnd', function(instance, event, pointer) {
-    if (instance.position.x > 550 && instance.position.x < 780) {
-      alert('You chose a ' + instance.element.dataset.property);
-    }
-  })
 }
 
 render();
