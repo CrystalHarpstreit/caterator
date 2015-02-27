@@ -41,6 +41,10 @@ function namer() {
     box.innerHTML = 'My name is ' + names[i];
 
     var draggie = draggieMaker(box);
+
+    if(name ) {
+      console.log("You already chose a name.")
+    }
   };
 }
 
